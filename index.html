@@ -1,0 +1,377 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.wrap{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;background:var(--color-background-primary)}
+.hdr{background:#1a1a1a;padding:10px 16px;display:flex;align-items:center;gap:10px}
+.logo{width:26px;height:26px;background:#dc2626;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;color:#fff;border-radius:2px;flex-shrink:0;font-family:var(--font-mono)}
+.htitle{font-size:10px;letter-spacing:3px;color:#dc2626;font-family:var(--font-mono)}
+.hsub{font-size:9px;color:#555;letter-spacing:1px;font-family:var(--font-mono)}
+.hright{margin-left:auto;font-size:9px;letter-spacing:2px;color:#555;font-family:var(--font-mono)}
+.steps{display:flex;border-bottom:0.5px solid var(--color-border-tertiary)}
+.step{flex:1;padding:8px 4px;text-align:center;font-size:9px;letter-spacing:2px;color:var(--color-text-tertiary);border-bottom:2px solid transparent;transition:all .2s;font-family:var(--font-mono)}
+.step.active{color:#dc2626;border-bottom-color:#dc2626}
+.step.done{color:var(--color-text-secondary);border-bottom-color:var(--color-border-secondary)}
+.body{padding:16px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:500px){.two{grid-template-columns:1fr}}
+.dz{border:1.5px dashed var(--color-border-secondary);border-radius:var(--border-radius-md);padding:28px 16px;text-align:center;cursor:pointer;transition:all .2s;background:var(--color-background-secondary)}
+.dz:hover,.dz.drag{border-color:#dc2626;background:var(--color-background-tertiary)}
+.card{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:12px;margin-bottom:10px}
+.ctitle{font-size:10px;letter-spacing:3px;color:#dc2626;margin-bottom:10px;font-family:var(--font-mono)}
+.sl{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.sl:last-child{margin-bottom:0}
+.sl label{font-size:12px;color:var(--color-text-secondary);min-width:60px}
+.sl input[type=range]{flex:1;accent-color:#dc2626}
+.sl span{font-size:12px;font-weight:500;font-family:var(--font-mono);min-width:40px;text-align:right;color:var(--color-text-primary)}
+.btn-r{width:100%;padding:12px;background:#dc2626;border:none;color:#fff;font-size:12px;letter-spacing:2px;font-weight:500;cursor:pointer;border-radius:var(--border-radius-md);font-family:var(--font-mono)}
+.btn-r:disabled{background:var(--color-background-tertiary);color:var(--color-text-tertiary);cursor:default}
+.btn-g{flex:1;padding:9px;background:none;border:0.5px solid var(--color-border-secondary);color:var(--color-text-secondary);font-size:11px;cursor:pointer;border-radius:var(--border-radius-md);font-family:var(--font-mono)}
+.brow{display:flex;gap:8px;margin-top:8px}
+.err{background:var(--color-background-danger);border:0.5px solid var(--color-border-danger);padding:9px;border-radius:var(--border-radius-md);font-size:12px;color:var(--color-text-danger);font-family:var(--font-mono);margin-bottom:9px;display:none}
+.info{background:var(--color-background-info);border:0.5px solid var(--color-border-info);padding:9px 12px;border-radius:var(--border-radius-md);font-size:12px;color:var(--color-text-info);font-family:var(--font-mono);margin-bottom:10px}
+.warn{background:var(--color-background-warning);border:0.5px solid var(--color-border-warning);padding:9px 12px;border-radius:var(--border-radius-md);font-size:12px;color:var(--color-text-warning);font-family:var(--font-mono);margin-bottom:10px;line-height:1.6}
+canvas{width:100%;display:block;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md)}
+.img-wrap{position:relative}
+.img-wrap img{width:100%;display:block;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md)}
+.img-reset{position:absolute;top:6px;right:6px;background:#00000099;border:none;color:#fff;padding:3px 10px;font-size:11px;cursor:pointer;border-radius:var(--border-radius-md);font-family:var(--font-mono)}
+.done-c{text-align:center;padding:32px 16px}
+.done-circle{width:56px;height:56px;border-radius:50%;background:var(--color-background-success);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:24px}
+.tip-row{display:flex;gap:12px;margin-bottom:6px;font-size:12px;text-align:left}
+.tip-key{color:var(--color-text-tertiary);min-width:44px;font-family:var(--font-mono)}
+.badge{display:inline-block;padding:2px 8px;border-radius:var(--border-radius-md);font-size:10px;font-family:var(--font-mono);margin-left:6px}
+.badge-g{background:var(--color-background-success);color:var(--color-text-success)}
+</style>
+
+<div class="wrap">
+  <div class="hdr">
+    <div class="logo">K</div>
+    <div><div class="htitle">KALEX</div><div class="hsub">MALAYSIA</div></div>
+    <div class="hright">实心墙壁 → STL <span class="badge badge-g">v2</span></div>
+  </div>
+  <div class="steps">
+    <div class="step active" id="s1">01 上传</div>
+    <div class="step" id="s2">02 检测</div>
+    <div class="step" id="s3">03 预览</div>
+    <div class="step" id="s4">04 导出</div>
+  </div>
+  <div class="body">
+
+    <!-- UPLOAD -->
+    <div id="ph-upload">
+      <div class="warn">
+        <i class="ti ti-bulb" aria-hidden="true"></i>
+        <b> 最佳效果：</b>上传只有粗黑墙壁的平面图（已移除家具、门弧、窗线）<br/>
+        算法会检测<b>黑色像素区域</b>并生成<b>实心 3D 墙壁</b>，不再是空心线条。
+      </div>
+      <div class="two">
+        <div>
+          <div class="dz" id="dz"
+            ondragover="event.preventDefault();this.classList.add('drag')"
+            ondragleave="this.classList.remove('drag')"
+            ondrop="doDrop(event)"
+            onclick="document.getElementById('fin').click()">
+            <div style="font-size:28px;color:var(--color-text-tertiary);margin-bottom:8px"><i class="ti ti-file-upload" aria-hidden="true"></i></div>
+            <div style="font-size:13px;color:var(--color-text-secondary)">拖放或点击上传</div>
+            <div style="font-size:11px;color:var(--color-text-tertiary);margin-top:4px">PNG · JPG（黑白墙壁图）</div>
+          </div>
+          <input type="file" id="fin" accept="image/*" style="display:none" onchange="loadFile(this.files[0])"/>
+          <div class="img-wrap" id="img-wrap" style="display:none">
+            <img id="img-el" alt="floor plan"/>
+            <button class="img-reset" onclick="reset()">✕</button>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:18px;font-weight:500;line-height:1.3;margin-bottom:9px;color:var(--color-text-primary)">
+            实心墙壁<br/><span style="color:#dc2626">像素填充挤出</span>
+          </div>
+          <p style="font-size:12px;color:var(--color-text-secondary);line-height:1.7;margin-bottom:12px">
+            新算法：检测图片中的<b>黑色像素区域</b>，把每个黑色方块变成实心 3D 柱体，拼合成实心墙壁。不再用线段，彻底解决空心问题。
+          </p>
+          <div class="card">
+            <div class="ctitle">黑色检测阈值</div>
+            <div class="sl">
+              <label>暗度阈值</label>
+              <input type="range" min="30" max="180" step="5" value="80" id="thresh"
+                oninput="document.getElementById('thv').textContent=this.value"/>
+              <span id="thv">80</span>
+            </div>
+            <div style="font-size:11px;color:var(--color-text-tertiary);margin-top:4px">
+              数值越小 = 只检测最深黑色（推荐：60-100）
+            </div>
+          </div>
+          <div class="card">
+            <div class="ctitle">打印参数</div>
+            <div class="sl">
+              <label>墙高</label>
+              <input type="range" min="3" max="20" step="1" value="8" id="wh"
+                oninput="document.getElementById('whv').textContent=this.value+'mm'"/>
+              <span id="whv">8mm</span>
+            </div>
+            <div class="sl">
+              <label>像素合并</label>
+              <input type="range" min="1" max="6" step="1" value="3" id="merge"
+                oninput="document.getElementById('mgv').textContent=this.value+'px'"/>
+              <span id="mgv">3px</span>
+            </div>
+            <div style="font-size:11px;color:var(--color-text-tertiary);margin-top:4px">
+              合并值越大 = STL 越简单，忽略细小噪点
+            </div>
+          </div>
+          <div class="err" id="err"><span id="errmsg"></span></div>
+          <button class="btn-r" id="detect-btn" onclick="detect()" disabled>
+            <i class="ti ti-scan" aria-hidden="true"></i> &nbsp;检测实心墙壁
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PREVIEW -->
+    <div id="ph-preview" style="display:none">
+      <div class="two">
+        <div>
+          <div class="ctitle">原图</div>
+          <canvas id="c-orig"></canvas>
+          <div class="ctitle" style="margin-top:12px">检测到的黑色区域（红色）</div>
+          <canvas id="c-result"></canvas>
+          <div style="font-size:11px;color:var(--color-text-tertiary);margin-top:4px">红色 = 将被挤出成实心墙壁的区域</div>
+        </div>
+        <div>
+          <div class="info" id="seg-info">检测到 0 个墙壁像素块</div>
+          <div class="card">
+            <div class="ctitle">调整参数</div>
+            <div class="sl">
+              <label>暗度阈值</label>
+              <input type="range" min="30" max="180" step="5" value="80" id="thresh2" oninput="syncThresh(this.value)"/>
+              <span id="thv2">80</span>
+            </div>
+            <div class="sl">
+              <label>墙高</label>
+              <input type="range" min="3" max="20" step="1" value="8" id="wh2" oninput="syncH(this.value)"/>
+              <span id="whv2">8mm</span>
+            </div>
+            <div class="sl">
+              <label>像素合并</label>
+              <input type="range" min="1" max="6" step="1" value="3" id="merge2" oninput="syncMerge(this.value)"/>
+              <span id="mgv2">3px</span>
+            </div>
+          </div>
+          <div class="card">
+            <div class="ctitle">STL 信息</div>
+            <div style="font-size:12px;color:var(--color-text-secondary);line-height:1.8;font-family:var(--font-mono)" id="stl-info">-</div>
+          </div>
+          <button class="btn-r" onclick="doExport()">
+            <i class="ti ti-download" aria-hidden="true"></i> &nbsp;导出实心 STL
+          </button>
+          <div class="brow">
+            <button class="btn-g" onclick="reset()"><i class="ti ti-arrow-left" aria-hidden="true"></i> 重新上传</button>
+            <button class="btn-g" onclick="detect()"><i class="ti ti-refresh" aria-hidden="true"></i> 重新检测</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DONE -->
+    <div id="ph-done" style="display:none">
+      <div class="done-c">
+        <div class="done-circle"><i class="ti ti-check" style="font-size:24px;color:#16a34a" aria-hidden="true"></i></div>
+        <div style="font-size:18px;font-weight:500;color:var(--color-text-primary)">实心 STL 导出成功！</div>
+        <div style="font-size:11px;color:var(--color-text-tertiary);font-family:var(--font-mono);margin-top:4px" id="done-fn">kalex_solid_walls.stl</div>
+        <div class="card" style="display:inline-block;text-align:left;margin:16px auto">
+          <div class="ctitle">Bambu Lab A1 打印建议</div>
+          <div class="tip-row"><span class="tip-key">材料</span><span>PLA 红色 + 白色</span></div>
+          <div class="tip-row"><span class="tip-key">层高</span><span>0.10 mm（精细）</span></div>
+          <div class="tip-row"><span class="tip-key">填充</span><span>15%</span></div>
+          <div class="tip-row"><span class="tip-key">支撑</span><span>不需要</span></div>
+          <div class="tip-row"><span class="tip-key">完成</span><span>贴 A4 背景纸 → IKEA 相框</span></div>
+        </div>
+        <div class="brow" style="justify-content:center">
+          <button class="btn-r" style="width:auto;padding:11px 24px" onclick="reset()">+ 新建项目</button>
+          <button class="btn-g" style="flex:none;padding:11px 20px" onclick="showPhase('preview')"><i class="ti ti-arrow-left" aria-hidden="true"></i> 返回</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+let imgEl=null,imgSrc=null,imgW=1,imgH=1;
+let wallBlocks=[];  // [{cx,cy,w,h}] in mm
+
+function showPhase(p){
+  ['upload','preview','done'].forEach(x=>document.getElementById('ph-'+x).style.display=p===x?'':'none');
+  const idx={upload:0,preview:2,done:3}[p];
+  ['s1','s2','s3','s4'].forEach((id,i)=>document.getElementById(id).className='step'+(i===idx?' active':i<idx?' done':''));
+}
+function doDrop(e){e.preventDefault();document.getElementById('dz').classList.remove('drag');loadFile(e.dataTransfer.files[0]);}
+function loadFile(f){
+  if(!f)return;hideErr();
+  const r=new FileReader();
+  r.onload=e=>{
+    imgSrc=e.target.result;
+    const img=new Image();
+    img.onload=()=>{
+      imgEl=img;imgW=img.naturalWidth;imgH=img.naturalHeight;
+      document.getElementById('dz').style.display='none';
+      document.getElementById('img-wrap').style.display='block';
+      document.getElementById('img-el').src=imgSrc;
+      document.getElementById('detect-btn').disabled=false;
+    };
+    img.src=imgSrc;
+  };
+  r.readAsDataURL(f);
+}
+function reset(){
+  imgEl=null;imgSrc=null;wallBlocks=[];
+  document.getElementById('dz').style.display='';
+  document.getElementById('img-wrap').style.display='none';
+  document.getElementById('detect-btn').disabled=true;
+  document.getElementById('fin').value='';
+  hideErr();showPhase('upload');
+}
+function syncThresh(v){document.getElementById('thresh').value=v;document.getElementById('thv').textContent=v;document.getElementById('thv2').textContent=v;}
+function syncH(v){document.getElementById('wh').value=v;document.getElementById('whv').textContent=v+'mm';document.getElementById('whv2').textContent=v+'mm';}
+function syncMerge(v){document.getElementById('merge').value=v;document.getElementById('mgv').textContent=v+'px';document.getElementById('mgv2').textContent=v+'px';}
+function showErr(m){document.getElementById('errmsg').textContent=m;document.getElementById('err').style.display='block';}
+function hideErr(){document.getElementById('err').style.display='none';}
+
+function detect(){
+  if(!imgEl)return;
+  hideErr();
+  const thresh=parseInt(document.getElementById('thresh').value);
+  const mergeSize=parseInt(document.getElementById('merge').value);
+
+  // Render image to offscreen canvas, max 500px
+  const MAX=500;
+  let W=imgW,H=imgH;
+  if(W>MAX){H=Math.round(H*MAX/W);W=MAX;}
+  if(H>MAX){W=Math.round(W*MAX/H);H=MAX;}
+
+  const off=document.createElement('canvas');
+  off.width=W;off.height=H;
+  const ctx=off.getContext('2d');
+  ctx.drawImage(imgEl,0,0,W,H);
+  const data=ctx.getImageData(0,0,W,H).data;
+
+  // Mark black pixels: grayscale < thresh
+  const isBlack=new Uint8Array(W*H);
+  for(let i=0;i<W*H;i++){
+    const r=data[i*4],g=data[i*4+1],b=data[i*4+2];
+    const lum=0.299*r+0.587*g+0.114*b;
+    isBlack[i]=lum<thresh?1:0;
+  }
+
+  // Show original
+  const co=document.getElementById('c-orig');
+  co.width=W;co.height=H;
+  co.getContext('2d').drawImage(imgEl,0,0,W,H);
+
+  // Merge into blocks of mergeSize x mergeSize
+  // Each block = solid voxel if majority pixels are black
+  const bW=Math.ceil(W/mergeSize);
+  const bH=Math.ceil(H/mergeSize);
+  const blocks=[];
+
+  // Physical scale: map image to ~200mm wide
+  const mmPerPx=200/W;
+  const blockMM=mergeSize*mmPerPx;
+
+  for(let by=0;by<bH;by++){
+    for(let bx=0;bx<bW;bx++){
+      let count=0,total=0;
+      for(let dy=0;dy<mergeSize;dy++){
+        for(let dx=0;dx<mergeSize;dx++){
+          const px=bx*mergeSize+dx,py=by*mergeSize+dy;
+          if(px<W&&py<H){isBlack[py*W+px]&&count++;total++;}
+        }
+      }
+      if(total>0&&count/total>0.4){
+        blocks.push({
+          bx,by,
+          x:bx*blockMM, y:by*blockMM,
+          w:blockMM, h:blockMM
+        });
+      }
+    }
+  }
+
+  wallBlocks=blocks;
+
+  // Draw result overlay
+  const cr=document.getElementById('c-result');
+  cr.width=W;cr.height=H;
+  const rctx=cr.getContext('2d');
+  rctx.drawImage(imgEl,0,0,W,H);
+  rctx.fillStyle='rgba(220,38,38,0.55)';
+  blocks.forEach(b=>{
+    rctx.fillRect(b.bx*mergeSize,b.by*mergeSize,mergeSize,mergeSize);
+  });
+
+  // Sync sliders
+  ['thresh','wh','merge'].forEach(id=>{
+    const v=document.getElementById(id).value;
+    const v2=document.getElementById(id+'2');
+    if(v2)v2.value=v;
+  });
+  document.getElementById('thv2').textContent=thresh;
+  document.getElementById('whv2').textContent=document.getElementById('wh').value+'mm';
+  document.getElementById('mgv2').textContent=mergeSize+'px';
+
+  const triCount=blocks.length*12; // 12 triangles per box
+  document.getElementById('seg-info').textContent=`检测到 ${blocks.length} 个实心墙壁块`;
+  document.getElementById('stl-info').innerHTML=
+    `墙壁块数：${blocks.length}<br>三角面数：${triCount}<br>物理尺寸：约 ${Math.round(W*mmPerPx)} × ${Math.round(H*mmPerPx)} mm`;
+
+  showPhase('preview');
+  document.getElementById('s2').className='step done';
+  document.getElementById('s3').className='step active';
+}
+
+function doExport(){
+  const wh=parseFloat(document.getElementById('wh2').value);
+  const buf=buildSTL(wallBlocks,wh);
+  const blob=new Blob([buf],{type:'application/octet-stream'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download=`kalex_solid_walls_h${wh}mm.stl`;
+  document.body.appendChild(a);a.click();
+  document.body.removeChild(a);URL.revokeObjectURL(url);
+  document.getElementById('done-fn').textContent=`kalex_solid_walls_h${wh}mm.stl`;
+  showPhase('done');
+}
+
+function buildSTL(blocks,H){
+  // Each block = a box (12 triangles = 6 faces x 2 tri each)
+  const tris=[];
+  const cross=(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]];
+  const norm=v=>{const l=Math.sqrt(v[0]**2+v[1]**2+v[2]**2)||1;return[v[0]/l,v[1]/l,v[2]/l];};
+  const quad=(a,b,c,d)=>{tris.push([a,b,c]);tris.push([a,c,d]);};
+
+  for(const b of blocks){
+    const x0=b.x, y0=b.y, x1=b.x+b.w, y1=b.y+b.h;
+    const A=[x0,y0,0],B=[x1,y0,0],C=[x1,y1,0],D=[x0,y1,0];
+    const E=[x0,y0,H],F=[x1,y0,H],G=[x1,y1,H],HH=[x0,y1,H];
+    quad(A,D,C,B); // bottom
+    quad(E,F,G,HH); // top
+    quad(A,B,F,E); // front
+    quad(B,C,G,F); // right
+    quad(C,D,HH,G); // back
+    quad(D,A,E,HH); // left
+  }
+
+  const buf=new ArrayBuffer(84+tris.length*50);
+  const v=new DataView(buf);
+  const hdr='Kalex Malaysia Solid Wall STL v2';
+  for(let i=0;i<80;i++)v.setUint8(i,i<hdr.length?hdr.charCodeAt(i):0);
+  v.setUint32(80,tris.length,true);
+  let off=84;
+  for(const [a,b,c] of tris){
+    const n=norm(cross([b[0]-a[0],b[1]-a[1],b[2]-a[2]],[c[0]-a[0],c[1]-a[1],c[2]-a[2]]));
+    for(const f of[...n,...a,...b,...c]){v.setFloat32(off,f,true);off+=4;}
+    v.setUint16(off,0,true);off+=2;
+  }
+  return buf;
+}
+
+showPhase('upload');
+</script>
